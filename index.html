@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <meta charset="UTF-8">
@@ -11,7 +10,7 @@
 html,body{
 margin:0;
 height:100%;
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:#111;
 color:#fff;
 }
@@ -19,12 +18,19 @@ color:#fff;
 .header{
 background:#222;
 padding:12px;
-font-size:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-.frame-container{
-height:calc(100vh - 50px);
+button{
+padding:8px 14px;
+cursor:pointer;
+}
+
+.frame{
 width:100%;
+height:calc(100vh - 50px);
 }
 
 iframe{
@@ -40,18 +46,20 @@ border:none;
 <body>
 
 <div class="header">
-ISP Customer Management Panel
+<div>ISP Customer Management Panel</div>
+<button onclick="reloadSheet()">Refresh</button>
 </div>
 
-<div class="frame-container">
+<div class="frame">
 
 <iframe
-src="https://1drv.ms/x/c/ecb6abb0923abd84/IQT8JpCCNk84QKLlNi8Vv6maAY5bMcRsAXx_LZ6M5VaOehg?em=2&wdAllowInteractivity=True&wdHideGridlines=False&wdHideHeaders=False"
+src="https://1drv.ms/x/c/ecb6abb0923abd84/IQT8JpCCNk84QKLlNi8Vv6maAY5bMcRsAXx_LZ6M5VaOehg?em=2&wdAllowInteractivity=True"
 allowfullscreen>
 </iframe>
 
 </div>
 
-</body>
+<script src="app.js"></script>
 
+</body>
 </html>
