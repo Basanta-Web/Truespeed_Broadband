@@ -1,59 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truespeed ISP Dashboard</title>
 
-<meta charset="UTF-8">
-<title>ISP Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <style>
+        /* Modern CSS Variables - Deep Slate Dark Theme */
+        :root {
+            --bg-main: #0f172a;        /* Slate 900 */
+            --bg-header: rgba(15, 23, 42, 0.75);
+            --bg-surface: #1e293b;     /* Slate 800 */
+            --border-color: #334155;   /* Slate 700 */
+            --text-primary: #f8fafc;   /* Slate 50 */
+            --text-secondary: #94a3b8; /* Slate 400 */
+            --accent-primary: #3b82f6; /* Blue 500 */
+            --accent-hover: #2563eb;   /* Blue 600 */
+            --selection-bg: rgba(59, 130, 246, 0.15);
+        }
 
-<style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
 
-body{
-margin:0;
-font-family:Arial;
-background:#111;
-color:#fff;
-}
+        /* Glassmorphism Header */
+        .header {
+            background: var(--bg-header);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            z-index: 10;
+        }
 
-.header{
-background:#222;
-padding:12px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
 
-#table{
-height:calc(100vh - 60px);
-width:100%;
-}
+        .brand span {
+            color: var(--accent-primary);
+        }
 
-button{
-padding:8px 12px;
-cursor:pointer;
-}
+        /* Modern Button Styling */
+        button {
+            background: var(--accent-primary);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-</style>
+        button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.2);
+        }
 
+        #table {
+            height: calc(100vh - 64px);
+            width: 100%;
+        }
+
+        /* --- HANDSONTABLE MODERN OVERRIDES --- */
+        
+        /* General Grid */
+        .handsontable {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+        }
+
+        /* Table Headers */
+        .handsontable th {
+            background-color: var(--bg-surface) !important;
+            color: var(--text-secondary) !important;
+            border-color: var(--border-color) !important;
+            font-weight: 500 !important;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 4px 8px !important;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        /* Table Cells */
+        .handsontable td {
+            background-color: var(--bg-main) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-color) !important;
+            padding: 0 12px !important;
+            vertical-align: middle;
+            transition: background 0.1s;
+        }
+
+        /* Row Headers (the numbers on the left) */
+        .handsontable tbody th.ht__highlight, .handsontable thead th.ht__highlight {
+            background-color: #2b3b52 !important;
+            color: white !important;
+        }
+
+        /* Cell Selection & Borders */
+        .wtBorder {
+            background-color: var(--accent-primary) !important;
+        }
+        .area {
+            background-color: var(--selection-bg) !important;
+        }
+
+        /* Scrollbars (Webkit) */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-surface);
+            border-radius: 5px;
+            border: 2px solid var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="header">
-<div>ISP Customer Dashboard</div>
-<button onclick="backupExcel()">Download Backup</button>
-</div>
+    <div class="header">
+        <div class="brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+            Truespeed <span>Broadband</span>
+        </div>
+        <button onclick="backupExcel()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Export Data
+        </button>
+    </div>
 
-<div id="table"></div>
+    <div id="table"></div>
 
-<script src="app.js"></script>
+    <script src="app.js"></script>
 
 </body>
 
