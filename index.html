@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>ISP Dashboard</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#111;
+color:#fff;
+}
+
+.header{
+padding:12px;
+background:#222;
+font-size:18px;
+}
+
+#table{
+width:100%;
+height:calc(100vh - 60px);
+}
+
+button{
+margin:10px;
+padding:8px 14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+ISP Customer Dashboard
+<button onclick="backupExcel()">Download Backup</button>
+</div>
+
+<div id="table"></div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
