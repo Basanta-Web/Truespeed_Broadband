@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="UTF-8">
-<title>ISP Customer Dashboard</title>
+<title>ISP Dashboard</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
 
 <style>
 
-html,body{
+body{
 margin:0;
-height:100%;
-font-family:Arial, sans-serif;
+font-family:Arial;
 background:#111;
 color:#fff;
 }
@@ -23,20 +30,14 @@ justify-content:space-between;
 align-items:center;
 }
 
+#table{
+height:calc(100vh - 60px);
+width:100%;
+}
+
 button{
-padding:8px 14px;
+padding:8px 12px;
 cursor:pointer;
-}
-
-.frame{
-width:100%;
-height:calc(100vh - 50px);
-}
-
-iframe{
-width:100%;
-height:100%;
-border:none;
 }
 
 </style>
@@ -46,20 +47,14 @@ border:none;
 <body>
 
 <div class="header">
-<div>ISP Customer Management Panel</div>
-<button onclick="reloadSheet()">Refresh</button>
+<div>ISP Customer Dashboard</div>
+<button onclick="backupExcel()">Download Backup</button>
 </div>
 
-<div class="frame">
-
-<iframe
-src="https://1drv.ms/x/c/ecb6abb0923abd84/IQT8JpCCNk84QKLlNi8Vv6maAY5bMcRsAXx_LZ6M5VaOehg?em=2&wdAllowInteractivity=True"
-allowfullscreen>
-</iframe>
-
-</div>
+<div id="table"></div>
 
 <script src="app.js"></script>
 
 </body>
+
 </html>
